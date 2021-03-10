@@ -14,7 +14,7 @@ from textwrap import dedent, indent
 from tqdm import tqdm
 from typing import List
 
-from utils.streamline_indices import write_list_of_streamline_indices
+from randomised_filtering.streamline_indices import write_list_of_streamline_indices
 
 
 DESC = """
@@ -27,17 +27,25 @@ EPILOG = dedent(
       {filename} subset_5M_0_plausible_ref.json subset_5M_1_plausible_ref.json hist_plausible.png
 
     ---
-      Author: danjorg@kth.se
+      Author: djoerch@gmail.com
     """.format(filename=os.path.basename(__file__))
 )
 
 
 def build_parser():
-    p = ArgumentParser(description=DESC, epilog=EPILOG, formatter_class=RawTextHelpFormatter)
-    p.add_argument('index_files', nargs='+', help='Path to index files in same reference space.')
+    p = ArgumentParser(
+        description=DESC, epilog=EPILOG, formatter_class=RawTextHelpFormatter
+    )
+    p.add_argument(
+        'index_files', nargs='+', help='Path to index files in same reference space.'
+    )
     p.add_argument('--hist', required=False, help='Path to plot file.')
     p.add_argument('--stats', action='store_true', help='Print statistics.')
-    p.add_argument('--out-basename', required=False, help='Path to file basename of output index files.')
+    p.add_argument(
+        '--out-basename',
+        required=False,
+        help='Path to file basename of output index files.'
+    )
     return p
 
 
@@ -68,14 +76,20 @@ if __name__ == "__main__":
     idx_list = []
     for idx_file in args['index_files']:
         ref_file, l = read_index_list_from_file(idx_file)
-        print('NOTE: reference file for {idx_file} is "{ref_file}".'.format(idx_file=idx_file, ref_file=ref_file))
+        print(
+            'NOTE: reference file for {idx_file} is "{ref_file}".'.format(
+                idx_file=idx_file, ref_file=ref_file
+            )
+        )
         idx_list.extend(l)
 
     idx_arr = np.array(idx_list)
     count_idx, counts = np.unique(idx_arr, return_counts=True)
 
     if args.get('stats'):
-        print("Statistics:\n{}".format(indent(str(pd.Series(counts).describe()), " "*4)))
+        print(
+            "Statistics:\n{}".format(indent(str(pd.Series(counts).describe()), " "*4))
+        )
 
     if args.get('hist'):
         plt.hist(counts)
@@ -83,13 +97,19 @@ if __name__ == "__main__":
 
     if args.get('out_basename'):
         print('NOTE: It is assumed here that all index files have the same reference file. CHECK THIS!')
-        for i in tqdm(range(1, len(args['index_files']) + 1), desc="Writing index files for vote counts"):
+        for i in tqdm(
+                range(1, len(args['index_files']) + 1),
+                desc="Writing index files for vote counts"
+        ):
             write_list_of_streamline_indices(
                 path_to_json_file=args['out_basename'] + '_votes_{}.json'.format(i),
                 list_sl_idx=count_idx[counts==i].tolist(),
                 path_to_tractogram=ref_file
             )
-        for i in tqdm(range(1, len(args['index_files']) + 1), desc="Writing index files for min vote counts"):
+        for i in tqdm(
+                range(1, len(args['index_files']) + 1),
+                desc="Writing index files for min vote counts"
+        ):
             write_list_of_streamline_indices(
                 path_to_json_file=args['out_basename'] + '_min_votes_{}.json'.format(i),
                 list_sl_idx=count_idx[counts>=i].tolist(),

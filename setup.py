@@ -1,5 +1,4 @@
 import setuptools
-import itertools
 
 from glob import glob
 
@@ -16,13 +15,15 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="github.com/djoerch/randomised_filtering",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_packages("src"),
+    package_dir={"": "src"},
     install_requires=[
         'dipy>=0.16.0',
         'nibabel',
         'numpy',
         'tqdm',
-        'pandas'
+        'pandas',
+        'matplotlib',
     ],
     scripts=glob("scripts/*"),
 )

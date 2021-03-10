@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import os
 import json
 
 from argparse import ArgumentParser, RawTextHelpFormatter
@@ -7,7 +8,7 @@ from textwrap import dedent
 from tqdm import tqdm
 from typing import List
 
-from utils.streamline_indices import write_list_of_streamline_indices
+from randomised_filtering.streamline_indices import write_list_of_streamline_indices
 
 
 DESC = """
@@ -17,17 +18,21 @@ EPILOG = dedent(
     """
     example calls:
 
-      utils_transform_indices_reference.py subset_indices.json subset_plausible.json subset_plausible_ref.json
+      {filename} subset_indices.json subset_plausible.json subset_plausible_ref.json
 
     ---
-      Author: danjorg@kth.se
-    """
+      Author: djoerch@gmail.com
+    """.format(filename=os.path.basename(__file__))
 )
 
 
 def build_parser():
-    p = ArgumentParser(description=DESC, epilog=EPILOG, formatter_class=RawTextHelpFormatter)
-    p.add_argument('subset_indices_ref', help='Path to index file with reference indices.')
+    p = ArgumentParser(
+        description=DESC, epilog=EPILOG, formatter_class=RawTextHelpFormatter
+    )
+    p.add_argument(
+        'subset_indices_ref', help='Path to index file with reference indices.'
+    )
     p.add_argument('subset_indices', help='Path to index file with subset indices.')
     p.add_argument('output_indices', help='Path to output index file.')
     return p
@@ -62,7 +67,9 @@ if __name__ == "__main__":
     _, subset_idx = read_index_list_from_file(args['subset_indices'])
 
     # extract the indices in the reference streamline set
-    subset_ref_idx = [ref_idx[i] for i in tqdm(subset_idx, desc="Extracting reference indices")]
+    subset_ref_idx = [
+        ref_idx[i] for i in tqdm(subset_idx, desc="Extracting reference indices")
+    ]
 
     # write reference indices
     write_list_of_streamline_indices(

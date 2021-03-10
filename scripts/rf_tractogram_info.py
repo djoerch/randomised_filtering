@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
+import os
 import nibabel as nib
 import pandas as pd
 
-from typing import List
 from argparse import ArgumentParser, RawTextHelpFormatter
 from textwrap import dedent
 from tqdm import tqdm
@@ -14,21 +14,31 @@ EPILOG = dedent(
     """
     example calls:
 
-      utils_tractogram_info.py <path_to_tractogram>
-      utils_tractogram_info.py <path_to_tractogram> --query nb_streamlines
+      {filename} <path_to_tractogram>
+      {filename} <path_to_tractogram> --query nb_streamlines
 
     ---
-      Author: danjorg@kth.se
-    """
+      Author: djoerch@gmail.com
+    """.format(filename=os.path.basename(__file__))
 )
 
 
 def build_parser():
-    p = ArgumentParser(description=DESC, epilog=EPILOG, formatter_class=RawTextHelpFormatter)
+    p = ArgumentParser(
+        description=DESC, epilog=EPILOG, formatter_class=RawTextHelpFormatter
+    )
     p.add_argument('tractogram', nargs='+', help='Path to tractogram to be queried.')
-    p.add_argument('--query', action='append', required=False, default=[], help='Name of header field which should be printed.')
     p.add_argument(
-        '--delimiter', default=',', help='Character to be used as separator in csv dump. (Default: ",")'
+        '--query',
+        action='append',
+        required=False,
+        default=[],
+        help='Name of header field which should be printed.'
+    )
+    p.add_argument(
+        '--delimiter',
+        default=',',
+        help='Character to be used as separator in csv dump. (Default: ",")'
     )
     ag = p.add_mutually_exclusive_group(required=False)
     ag.add_argument(
@@ -48,7 +58,11 @@ if __name__ == "__main__":
     header = ['filename'] + args['query']
     table = list()
 
-    for filepath in tqdm(args['tractogram'], desc="Looping over tractograms", ncols=100):
+    for filepath in tqdm(
+            args['tractogram'],
+            desc="Looping over tractograms",
+            ncols=100
+    ):
 
         t = nib.streamlines.load(filepath, lazy_load=True)
 

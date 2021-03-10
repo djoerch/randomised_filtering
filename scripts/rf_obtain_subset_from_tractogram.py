@@ -19,7 +19,7 @@ EPILOG = dedent(
       {filename} <path_to_tractogram> <path_to_json_file> <path_to_output_file>
 
     ---
-      Author: danjorg@kth.se
+      Author: djoerch@gmail.com
     """.format(filename=os.path.basename(__file__))
 )
 
