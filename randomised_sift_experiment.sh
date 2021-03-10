@@ -9,12 +9,12 @@
 #  danjorg@kth.se
 
 
-BASE_PATH=/mnt/raid5/djoergens/sift_test_3
+BASE_PATH=/home/djoergens/randomised_filtering/dataset/599671
 # PATH_TO_SIMG=/mnt/raid5/djoergens/singularity_test/dec_tab_commit_sandbox.sif
 
 
-NUM_REALISATIONS=5
-SAMPLE_SIZE=5000000
+NUM_REALISATIONS=1
+SAMPLE_SIZE=100000
 
 
 BOOTSTRAP_IDS=$(seq 1 ${NUM_REALISATIONS})
@@ -51,7 +51,7 @@ mkdir -p ${PATH_TO_OUTPUT_FOLDER}
 # obtain index files
 for i in ${BOOTSTRAP_IDS}
 do
-    utils_create_random_streamline_indices.py \
+    rf_create_random_streamline_indices.py \
         ${BASE_PATH}/All_10M_corrected.trk \
         ${SAMPLE_SIZE} \
         ${PATH_TO_OUTPUT_FOLDER}/subset_${i}.json \
@@ -63,7 +63,7 @@ done
 running_commands=()
 for jsonfile in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep json)
 do
-    utils_obtain_subset_from_tractogram.py \
+    rf_obtain_subset_from_tractogram.py \
         ${BASE_PATH}/All_10M_corrected.trk \
         ${jsonfile} \
         ${jsonfile%.json}.trk &
@@ -109,7 +109,7 @@ done
 # convert selection files to index files
 for selection_file in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep selection.txt)
 do
-    utils_streamline_indices_from_mrtrix_selection.py \
+    rf_streamline_indices_from_mrtrix_selection.py \
         ${selection_file} \
         ${selection_file%_selection.txt}.trk \
         ${selection_file%_selection.txt}
@@ -119,11 +119,11 @@ done
 # transform index files to reference tractogram
 for i in ${BOOTSTRAP_IDS}
 do
-    utils_transform_indices_reference.py \
+    rf_transform_indices_reference.py \
         ${PATH_TO_OUTPUT_FOLDER}/subset_${i}.json \
         ${PATH_TO_OUTPUT_FOLDER}/subset_${i}_plausible_indices.json \
         ${PATH_TO_OUTPUT_FOLDER}/subset_${i}_plausible_ref.json
-    utils_transform_indices_reference.py \
+    rf_transform_indices_reference.py \
         ${PATH_TO_OUTPUT_FOLDER}/subset_${i}.json \
         ${PATH_TO_OUTPUT_FOLDER}/subset_${i}_implausible_indices.json \
         ${PATH_TO_OUTPUT_FOLDER}/subset_${i}_implausible_ref.json
@@ -131,34 +131,34 @@ done
 
 
 # perform voting
-eval utils_analyse_index_files.py \
+eval rf_analyse_index_files.py \
     ${PATH_TO_OUTPUT_FOLDER}/subset_{1..${NUM_REALISATIONS}}_plausible_ref.json \
     --out-basename ${PATH_TO_OUTPUT_FOLDER}/subsets_plausible
-eval utils_analyse_index_files.py \
+eval rf_analyse_index_files.py \
     ${PATH_TO_OUTPUT_FOLDER}/subset_{1..${NUM_REALISATIONS}}_implausible_ref.json \
     --out-basename ${PATH_TO_OUTPUT_FOLDER}/subsets_implausible
 
 
 # extract tractograms from resulting vote index files
-running_commands=()
-for idx_file in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep subsets_ | grep ible_votes | grep json)
-do
-    utils_obtain_subset_from_tractogram.py \
-        ${PATH_TO_OUTPUT_FOLDER}/All_10M_corrected.trk \
-        ${idx_file} \
-        ${idx_file%.json}.trk &
-    running_commands+=($!)  # add process id to running command list
-done
-wait_commands ${running_commands[@]}
+#running_commands=()
+#for idx_file in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep subsets_ | grep ible_votes | grep json)
+#do
+#    rf_obtain_subset_from_tractogram.py \
+#        ${PATH_TO_OUTPUT_FOLDER}/All_10M_corrected.trk \
+#        ${idx_file} \
+#        ${idx_file%.json}.trk &
+#    running_commands+=($!)  # add process id to running command list
+#done
+#wait_commands ${running_commands[@]}
 
 
-for idx_file in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep subsets_ | grep ible_min_votes | grep json)
-do
-    utils_obtain_subset_from_tractogram.py \
-        ${BASE_PATH}/All_10M_corrected.trk \
-        ${idx_file} \
-        ${idx_file%.json}.trk
-done
+#for idx_file in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep subsets_ | grep ible_min_votes | grep json)
+#do
+#    rf_obtain_subset_from_tractogram.py \
+#        ${BASE_PATH}/All_10M_corrected.trk \
+#        ${idx_file} \
+#        ${idx_file%.json}.trk
+#done
 
 
 # make confusion matrix
@@ -168,7 +168,7 @@ for i in ${BOOTSTRAP_IDS}
 do
     for j in ${BOOTSTRAP_IDS}
     do
-        utils_analyse_index_files.py \
+        rf_analyse_index_files.py \
             ${PATH_TO_OUTPUT_FOLDER}/subset_${i}_plausible_ref.json \
             ${PATH_TO_OUTPUT_FOLDER}/subset_${j}_implausible_ref.json \
             --out-basename ${PATH_TO_OUTPUT_FOLDER}/conf_mat/subsets_plausible_${i}_implausible_${j} &
@@ -182,7 +182,7 @@ wait_commands ${running_commands[@]}
 running_commands=()=
 for i in ${BOOTSTRAP_IDS}
 do
-    eval utils_analyse_index_files.py \
+    eval rf_analyse_index_files.py \
         ${PATH_TO_OUTPUT_FOLDER}/conf_mat/subsets_plausible_${i}_implausible_{0..${NUM_REALISATIONS}}_votes_2.json \
         --out-basename ${PATH_TO_OUTPUT_FOLDER}/conf_mat/subsets_plausible_${i}_implausible_all &
     running_commands+=($!)  # add process id to running command list
@@ -196,7 +196,7 @@ for i in $(seq 1 ${NUM_REALISATIONS})
 do
     for j in $(seq 1 ${NUM_REALISATIONS})
     do
-        utils_analyse_index_files.py \
+        rf_analyse_index_files.py \
             ${PATH_TO_OUTPUT_FOLDER}/subsets_plausible_votes_${i}.json \
             ${PATH_TO_OUTPUT_FOLDER}/subsets_implausible_votes_${j}.json \
             --out-basename ${BASE_PATH}/conf_mat/subsets_plausible_votes_${i}_implausible_votes_${j} &
