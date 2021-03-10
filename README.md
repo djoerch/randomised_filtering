@@ -40,6 +40,6 @@ provides a brief help text when invoked with the option `-h`.
 # Development
 
 If you work with this repo, please `fork` it to your own account on `github`.
-For development store your changes in separate branches (**not the `main` branch**)
+For development store your changes in separate branches (**not the `main` or `master` branch**)
 and use **pull requests** on `github` to request a merge into this repo (at least
 one approval required).
