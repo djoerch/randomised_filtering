@@ -98,8 +98,8 @@ do
         ${tractofile} \
         ${BASE_PATH}/WM_FODs.mif \
         ${tractofile%.tck}_sift.tck \
-        -out_selection ${PATH_TO_OUTPUT_FOLDER}/${tractofile%.tck}_selection.txt
-#    cmd="tcksift ${tractofile} ${BASE_PATH}/WM_FODs.mif ${tractofile%.tck}_sift.tck -out_selection ${PATH_TO_OUTPUT_FOLDER}/${tractofile%.tck}_selection.txt"
+        -out_selection ${tractofile%.tck}_selection.txt
+#    cmd="tcksift ${tractofile} ${BASE_PATH}/WM_FODs.mif ${tractofile%.tck}_sift.tck -out_selection ${tractofile%.tck}_selection.txt"
 #    singularity \
 #        exec ${PATH_TO_SIMG} \
 #        bash -c "${cmd}"
@@ -179,11 +179,11 @@ wait_commands ${running_commands[@]}
 
 
 # sum rows of confusion matrix
-running_commands=()=
+running_commands=()
 for i in ${BOOTSTRAP_IDS}
 do
     eval rf_analyse_index_files.py \
-        ${PATH_TO_OUTPUT_FOLDER}/conf_mat/subsets_plausible_${i}_implausible_{0..${NUM_REALISATIONS}}_votes_2.json \
+        ${PATH_TO_OUTPUT_FOLDER}/conf_mat/subsets_plausible_${i}_implausible_{1..${NUM_REALISATIONS}}_votes_2.json \
         --out-basename ${PATH_TO_OUTPUT_FOLDER}/conf_mat/subsets_plausible_${i}_implausible_all &
     running_commands+=($!)  # add process id to running command list
 done
@@ -199,7 +199,7 @@ do
         rf_analyse_index_files.py \
             ${PATH_TO_OUTPUT_FOLDER}/subsets_plausible_votes_${i}.json \
             ${PATH_TO_OUTPUT_FOLDER}/subsets_implausible_votes_${j}.json \
-            --out-basename ${BASE_PATH}/conf_mat/subsets_plausible_votes_${i}_implausible_votes_${j} &
+            --out-basename ${PATH_TO_OUTPUT_FOLDER}/conf_mat/subsets_plausible_votes_${i}_implausible_votes_${j} &
         running_commands+=($!)  # add process id to running command list
     done
 done
