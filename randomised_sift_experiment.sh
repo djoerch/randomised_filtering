@@ -61,7 +61,7 @@ done
 
 # obtain subsets
 running_commands=()
-for jsonfile in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep json)
+for jsonfile in $(ls ${PATH_TO_OUTPUT_FOLDER}/* | grep json)
 do
     rf_obtain_subset_from_tractogram.py \
         ${BASE_PATH}/All_10M_corrected.trk \
@@ -76,7 +76,7 @@ wait_commands ${running_commands[@]}
 
 # convert to tck
 running_commands=()
-for tractofile in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep subset | grep trk)
+for tractofile in $(ls ${PATH_TO_OUTPUT_FOLDER}/* | grep subset | grep trk)
 do
     scil_convert_tractogram.py \
         --reference ${BASE_PATH}/data.nii.gz \
@@ -92,7 +92,7 @@ wait_commands ${running_commands[@]}
 
 
 # call sift
-for tractofile in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep subset | grep tck)
+for tractofile in $(ls ${PATH_TO_OUTPUT_FOLDER}/* | grep subset | grep tck)
 do
     tcksift \
         ${tractofile} \
@@ -107,7 +107,7 @@ done
 
 
 # convert selection files to index files
-for selection_file in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep selection.txt)
+for selection_file in $(ls ${PATH_TO_OUTPUT_FOLDER}/* | grep selection.txt)
 do
     rf_streamline_indices_from_mrtrix_selection.py \
         ${selection_file} \
