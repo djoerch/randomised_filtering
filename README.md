@@ -36,3 +36,10 @@ take command line arguments if needed.)
 The script `randomised_sift_experiment.sh` is the anchor and launches all necessary
 commands. The individual scripts `rf_*` can be launched individually, too. Each
 provides a brief help text when invoked with the option `-h`.
+
+# Development
+
+If you work with this repo, please `fork` it to your own account on `github`.
+For development store your changes in separate branches (**not the `main` branch**)
+and use **pull requests** on `github` to request a merge into this repo (at least
+one approval required).
