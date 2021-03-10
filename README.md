@@ -19,6 +19,12 @@ pip install -e <path_to_randomised_filtering_repo>
 After that the scripts in the `scripts` folder will be available with autocompletion
 whenever the virtual environment is activated.
 
+### Additional resources
+
+The script `scil_convert_tractogram.py` is used in the bash script to convert
+tractograms between different formats. For this to work, the repo
+at `https://github.com/scilus/scilpy` has to be installed (follow their README).
+
 ### Bash script
 
 The bash script is not installed in the virtual environment and should be called

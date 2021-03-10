@@ -10,7 +10,7 @@
 
 
 BASE_PATH=/mnt/raid5/djoergens/sift_test_3
-PATH_TO_SIMG=/mnt/raid5/djoergens/singularity_test/dec_tab_commit_sandbox.sif
+# PATH_TO_SIMG=/mnt/raid5/djoergens/singularity_test/dec_tab_commit_sandbox.sif
 
 
 NUM_REALISATIONS=5
@@ -78,10 +78,14 @@ wait_commands ${running_commands[@]}
 running_commands=()
 for tractofile in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep subset | grep trk)
 do
-    cmd='source "${PATH_TO_VENV_SCILPY}/bin/activate" && '"scil_convert_tractogram.py --reference ${BASE_PATH}/data.nii.gz ${tractofile} ${tractofile%.trk}.tck"
-    singularity \
-        exec ${PATH_TO_SIMG} \
-        bash -c "${cmd}" &
+    scil_convert_tractogram.py \
+        --reference ${BASE_PATH}/data.nii.gz \
+        ${tractofile} \
+        ${tractofile%.trk}.tck &
+#    cmd='source "${PATH_TO_VENV_SCILPY}/bin/activate" && '"scil_convert_tractogram.py --reference ${BASE_PATH}/data.nii.gz ${tractofile} ${tractofile%.trk}.tck"
+#    singularity \
+#        exec ${PATH_TO_SIMG} \
+#        bash -c "${cmd}" &
     running_commands+=($!)
 done
 wait_commands ${running_commands[@]}
@@ -90,10 +94,15 @@ wait_commands ${running_commands[@]}
 # call sift
 for tractofile in $(ls ${PATH_TO_OUTPUT_FOLDER} | grep subset | grep tck)
 do
-    cmd="tcksift ${tractofile} ${BASE_PATH}/WM_FODs.mif ${tractofile%.tck}_sift.tck -out_selection ${PATH_TO_OUTPUT_FOLDER}/${tractofile%.tck}_selection.txt"
-    singularity \
-        exec ${PATH_TO_SIMG} \
-        bash -c "${cmd}"
+    tcksift \
+        ${tractofile} \
+        ${BASE_PATH}/WM_FODs.mif \
+        ${tractofile%.tck}_sift.tck \
+        -out_selection ${PATH_TO_OUTPUT_FOLDER}/${tractofile%.tck}_selection.txt
+#    cmd="tcksift ${tractofile} ${BASE_PATH}/WM_FODs.mif ${tractofile%.tck}_sift.tck -out_selection ${PATH_TO_OUTPUT_FOLDER}/${tractofile%.tck}_selection.txt"
+#    singularity \
+#        exec ${PATH_TO_SIMG} \
+#        bash -c "${cmd}"
 done
 
 
