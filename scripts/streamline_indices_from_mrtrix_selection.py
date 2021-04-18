@@ -6,7 +6,7 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from textwrap import dedent
 from tqdm import tqdm
 
-from randomised_filtering.streamline_indices import (
+from streamline_indices import (
     write_list_of_streamline_indices,
     get_list_of_streamline_indices_from_mrtrix,
 )
@@ -26,7 +26,6 @@ EPILOG = dedent(
       Author: djoerch@gmail.com
     """.format(filename=os.path.basename(__file__))
 )
-
 
 def build_parser():
     p = ArgumentParser(

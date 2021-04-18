@@ -1,15 +1,19 @@
-"""Utilities for manipulating streamline indices."""
-
 import numpy as np
 import json
 
 from typing import Tuple, List
 from textwrap import dedent
 
+DESC = dedent("""
+    Utilities for manipulating streamline indices.
+""")
+EPILOG = dedent("""
+    -- author:
+        djoerch@gmail.com
+""")
 
-def get_list_of_streamline_indices_from_mrtrix(
-        path_to_mrtrix_selection_file: str
-) -> Tuple[List[int]]:
+
+def get_list_of_streamline_indices_from_mrtrix(path_to_mrtrix_selection_file: str) -> Tuple[List[int]]:
     """Read the mrtrix selection file and convert the 'binary mask'
     into streamline indices.
 
@@ -25,6 +29,7 @@ def get_list_of_streamline_indices_from_mrtrix(
     idx_1 : List[int]
         list of streamline indices of 'plausible' streamlines
     """
+
     with open(path_to_mrtrix_selection_file, 'r') as f:
         l: List[int] = [int(line.rstrip()) for line in f]
 

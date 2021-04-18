@@ -8,7 +8,7 @@ from textwrap import dedent
 from tqdm import tqdm
 from typing import List
 
-from randomised_filtering.streamline_indices import write_list_of_streamline_indices
+from streamline_indices import write_list_of_streamline_indices
 
 
 DESC = """
