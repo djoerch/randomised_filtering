@@ -75,7 +75,7 @@ def normalize_streamlines(
     print("min", mincoord)
     print("max", maxcoord)
     return np.asarray(
-        [((s - mincoord)/(maxcoord - mincoord))*2 - 1 for s in streamlines]
+        [((s - mincoord) / (maxcoord - mincoord)) * 2 - 1 for s in streamlines]
     )
 
 
