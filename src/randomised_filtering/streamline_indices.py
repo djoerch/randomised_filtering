@@ -7,7 +7,9 @@ from typing import Tuple, List
 from textwrap import dedent
 
 
-def get_list_of_streamline_indices_from_mrtrix(path_to_mrtrix_selection_file: str) -> Tuple[List[int]]:
+def get_list_of_streamline_indices_from_mrtrix(
+    path_to_mrtrix_selection_file: str
+) -> Tuple[List[int], List[int]]:
     """Read the mrtrix selection file and convert the 'binary mask'
     into streamline indices.
 
@@ -43,7 +45,7 @@ def get_list_of_streamline_indices_from_mrtrix(path_to_mrtrix_selection_file: st
 
 
 def write_list_of_streamline_indices(
-        path_to_json_file: str, list_sl_idx: List[int], path_to_tractogram: str
+    path_to_json_file: str, list_sl_idx: List[int], path_to_tractogram: str
 ) -> None:
     """Write given list of streamline indices to to json file.
 
