@@ -1,16 +1,10 @@
+"""Utilities for manipulating streamline indices."""
+
 import numpy as np
 import json
 
 from typing import Tuple, List
 from textwrap import dedent
-
-DESC = dedent("""
-    Utilities for manipulating streamline indices.
-""")
-EPILOG = dedent("""
-    -- author:
-        djoerch@gmail.com
-""")
 
 
 def get_list_of_streamline_indices_from_mrtrix(path_to_mrtrix_selection_file: str) -> Tuple[List[int]]:
