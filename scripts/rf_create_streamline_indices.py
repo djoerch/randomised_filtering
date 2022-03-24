@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+
 import numpy as np
 import nibabel as nib
 
@@ -9,7 +10,7 @@ import matplotlib.pyplot as plt
 from textwrap import dedent
 from argparse import ArgumentParser, RawTextHelpFormatter
 
-from streamline_indices import write_list_of_streamline_indices
+from randomised_filtering.streamline_indices import write_list_of_streamline_indices
 
 
 DESC = dedent("""

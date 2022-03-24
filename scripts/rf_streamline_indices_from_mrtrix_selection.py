@@ -6,7 +6,7 @@ from argparse import ArgumentParser, RawTextHelpFormatter
 from textwrap import dedent
 from tqdm import tqdm
 
-from streamline_indices import (
+from randomised_filtering.streamline_indices import (
     write_list_of_streamline_indices,
     get_list_of_streamline_indices_from_mrtrix,
 )
