@@ -11,13 +11,15 @@ import numpy as np
 from typing import Optional
 
 
-def get_indices_from_json(filepath: str):
+def get_indices_from_json(filepath: str, dtype=None):
     """Loads streamline indices from a json file
 
     Parameters
     ----------
     filepath : str
-     path/name of file with the indices
+        path/name of file with the indices
+    dtype : numpy dtype, optional
+        if given, indices are converted to given data type
 
     Returns
     -------
@@ -28,6 +30,10 @@ def get_indices_from_json(filepath: str):
         data = json.loads(f.readline())
         ind_key = data["filenames"][0]
         ind = data[ind_key]
+
+    if dtype:
+        ind = np.array(ind, dtype=dtype)
+
     return ind
 
 

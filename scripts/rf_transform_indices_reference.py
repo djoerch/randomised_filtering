@@ -19,9 +19,6 @@ EPILOG = dedent(
     example calls:
 
       {filename} subset_indices.json subset_plausible.json subset_plausible_ref.json
-
-    ---
-      Author: djoerch@gmail.com
     """.format(filename=os.path.basename(__file__))
 )
 
