@@ -3,12 +3,12 @@
 # -- desc
 #  Runs SIFT experiment for one subject.
 #
-# Args: BASE_PATH: path to folder with subject data
-#       RANDOMIZED: 0 for sequential, 1 for randomized (rSIFT).
-#       NUM_REALISATIONS: number of repetitions (amount of subsets)
-#       SAMPLE_SIZE: size of each subset
-#       OUTPUT_FOLDER: name of folder where results will be put. will be
-#                     created as sub-folder of BASE_PATH
+# -- args
+#  1 - path to folder with subject data (base path)
+#  2 - 0 for sequential, 1 for randomized (rSIFT).
+#  3 - number of repetitions (amount of subsets)
+#  4 - size of each subset
+#  5 - name of folder for results. will be created as sub-folder of given base path
 #
 # -- author
 #  djoerch@gmail.com, antoniabhain@gmail.com
@@ -20,6 +20,9 @@ RANDOMIZED="${2}"
 NUM_REALISATIONS="${3}"
 SAMPLE_SIZE="${4}"
 OUTPUT_FOLDER="${5}"  # all generated files will be put in here
+
+
+# constants
 TRACTOGRAM_NAME="all.trk"
 
 
@@ -40,8 +43,10 @@ function wait_commands {
 echo
 echo " - - $(date)"
 echo "  base path: ${BASE_PATH}"
+echo "  randomization (0 for sequential, 1 for randomized i.e. rSIFT): ${RANDOMIZED}"
 echo "  number of bootstrap realisations: ${NUM_REALISATIONS}"
 echo "  number of streamlines per realisation: ${SAMPLE_SIZE}"
+echo "  output folder: ${OUTPUT_FOLDER}"
 echo
 
 echo " path $PWD"
