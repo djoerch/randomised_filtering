@@ -27,7 +27,6 @@ EPILOG = dedent(
     """.format(filename=os.path.basename(__file__))
 )
 
-
 def build_parser():
     p = ArgumentParser(
         description=DESC, epilog=EPILOG, formatter_class=RawTextHelpFormatter

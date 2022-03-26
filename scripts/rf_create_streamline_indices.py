@@ -31,26 +31,32 @@ def build_argparser():
     p.add_argument(
         'num_streamlines', type=int, help='Number of randomly chosen streamlines.'
     )
+    p.add_argument('randomized', type=int, help='Number of the set/chunk.')
     p.add_argument('output_file', help='Path to output file (.json).')
+    p.add_argument('--set', type=int, required=False, help='Number of the set/chunk.')
     p.add_argument(
         '--hist', required=False, help='Path to histogram plot of the created indices.'
     )
-
     return p
 
 
 def main():
-
     args = vars(build_argparser().parse_args())
 
     tf = nib.streamlines.load(args['reference_file'], lazy_load=True)
 
-    # idx_list = (tf.header['nb_streamlines'] * np.random.rand(args['num_streamlines'])).astype('int32').tolist()
-    idx_list = np.random.choice(
-        np.arange(tf.header['nb_streamlines']),
-        size=args['num_streamlines'],
-        replace=False
-    ).tolist()
+    # modified from original script to contain if/else
+    if args.get('randomized') == 1:
+        # randomized procedure
+        idx_list = np.random.choice(
+           np.arange(tf.header['nb_streamlines']),
+           size=args['num_streamlines'],
+           replace=False
+        ).tolist()
+    else:
+        # sequential procedure
+        idx_list = np.arange((args['set']-1) * args['num_streamlines'], args['set'] * args['num_streamlines']).tolist()
+
     write_list_of_streamline_indices(
         path_to_json_file=args['output_file'],
         list_sl_idx=idx_list,
