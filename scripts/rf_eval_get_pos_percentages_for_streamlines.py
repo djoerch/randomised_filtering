@@ -9,6 +9,7 @@ from randomised_filtering.classifier.streamline_loader import get_indices_from_j
 from randomised_filtering.evaluation import (
     get_meta_streamline_index,
     get_output_folders,
+    get_acceptance_rate
 )
 
 
@@ -61,8 +62,8 @@ def main():
 
     # get acceptance rates for all streamlines of interests and write to file.
     result = np.array(
-        [[entry[2], get_pos_percentage(entry)] for entry in entries]  # noqa: F821
-    )  # TODO
+        [[entry[2], get_acceptance_rate(entry)] for entry in entries] 
+    )  
     np.savetxt(f"percentages_{name}.txt", result)
 
 
