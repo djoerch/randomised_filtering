@@ -20,7 +20,7 @@ def training_cv(data, model, nb_folds, batch_size, epochs, base_path_to_model=No
 
         for i in range(len(data)):
             tmp_mask = np.zeros(len(data[i]), dtype=np.bool)
-            tmp_mask[int(fold * fold_len[i]): int((fold + 1) * fold_len[i])] = True
+            tmp_mask[int(fold * fold_len[i]) : int((fold + 1) * fold_len[i])] = True
             test_mask += [tmp_mask]
 
         train_mask = [np.invert(m) for m in test_mask]
@@ -48,12 +48,15 @@ def train_model(data_train, data_test, model, batch_size, epochs, path_to_model=
     Model weights are dumped if path is given.
     """
 
-    assert len(data_train) == len(data_test), \
-        "Training and testing data must have same number of classes."
+    assert len(data_train) == len(
+        data_test
+    ), "Training and testing data must have same number of classes."
 
     # make data generators
     traingen_pn = BalancedDataGen(
-        data=data_train, weights=[1] * len(data_train), batch_size=batch_size,
+        data=data_train,
+        weights=[1] * len(data_train),
+        batch_size=batch_size,
     )
     testgen_pn = BalancedDataGen(
         data=data_test, weights=[1] * len(data_test), batch_size=batch_size

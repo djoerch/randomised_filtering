@@ -168,7 +168,7 @@ def process_subsets(filepath, streamline_index=None):
     print("\nProcessing subsets for", filepath)
 
     folder_contents = os.listdir(filepath)
-    subsets = sum([x[-19:] == '_plausible_ref.json' for x in folder_contents])
+    subsets = sum([x[-19:] == "_plausible_ref.json" for x in folder_contents])
     print("Found data for " + str(subsets) + " subsets.")
     print("\nPreparing streamline array...")
 
@@ -222,14 +222,14 @@ def evaluate_subsets(streamline_index, subsets, name):
         outputfilename = "results.csv"
     else:
         outputfilename = "results_" + name + ".csv"
-    
+
     with open(outputfilename, "w") as f:
         f.write("\n\nDistribution by amount of votes\n-----")
 
         num_streamlines = len(streamline_index)
 
         # go through streamlines with a total of 0 votes, 1 vote, 2 votes, ...
-        for votesum in range(subsets+1):
+        for votesum in range(subsets + 1):
             # first, get total # of streamlines with this amount of votes
             # (allows for percentage computation)
             streamline_sum = 0
@@ -245,7 +245,7 @@ def evaluate_subsets(streamline_index, subsets, name):
                 f.write(f"\n{votesum} votes: \n")
                 f.write(
                     "streamlines;{};{}%%\n\n".format(
-                        streamline_sum, round(streamline_sum*100 / num_streamlines, 4)
+                        streamline_sum, round(streamline_sum * 100 / num_streamlines, 4)
                     )
                 )
 
@@ -259,7 +259,7 @@ def evaluate_subsets(streamline_index, subsets, name):
                                 p,
                                 n,
                                 streamline_count,
-                                round(streamline_count*100 / streamline_sum, 2)
+                                round(streamline_count * 100 / streamline_sum, 2),
                             )
                         )
 
@@ -292,7 +292,7 @@ def evaluate_subsets(streamline_index, subsets, name):
                     max(0, lower_bound),
                     min(100, lower_bound + 20),
                     streamline_count,
-                    round(streamline_count * 100 / total_evaluated_streamlines, 2)
+                    round(streamline_count * 100 / total_evaluated_streamlines, 2),
                 )
             )
 
@@ -316,13 +316,17 @@ def get_acceptance_rate(streamline_stats):
 
     if len(streamline_stats[0]) + len(streamline_stats[1]) == 0:
         return -1
-    ar = len(streamline_stats[0]) * 100 \
+    ar = (
+        len(streamline_stats[0])
+        * 100
         / (len(streamline_stats[0]) + len(streamline_stats[1]))
+    )
     return ar
 
 
 def get_output_folders(path, folder_name):
-    """Returns list of folders in path whose name starts with folder_name, sorts them.
+    """
+    Returns list of folders in path whose name starts with folder_name, sorts them.
     """
     folders = [f for f in os.listdir(path) if f.startswith(folder_name)]
 
@@ -333,7 +337,7 @@ def get_output_folders(path, folder_name):
         )
     except ValueError:
         print("Could not sort output folders, will return unsorted list")
-        
+
     return folders
 
 

@@ -19,7 +19,9 @@ EPILOG = dedent(
     example calls:
 
       {filename} subset_indices.json subset_plausible.json subset_plausible_ref.json
-    """.format(filename=os.path.basename(__file__))
+    """.format(
+        filename=os.path.basename(__file__)
+    )
 )
 
 
@@ -28,10 +30,10 @@ def build_parser():
         description=DESC, epilog=EPILOG, formatter_class=RawTextHelpFormatter
     )
     p.add_argument(
-        'subset_indices_ref', help='Path to index file with reference indices.'
+        "subset_indices_ref", help="Path to index file with reference indices."
     )
-    p.add_argument('subset_indices', help='Path to index file with subset indices.')
-    p.add_argument('output_indices', help='Path to output index file.')
+    p.add_argument("subset_indices", help="Path to index file with subset indices.")
+    p.add_argument("output_indices", help="Path to output index file.")
     return p
 
 
@@ -51,17 +53,17 @@ def read_index_list_from_file(json_file: str) -> List[int]:
     idx_list : List[int]
         list of streamline indices in the reference tractogram
     """
-    with open(json_file, 'r') as f:
+    with open(json_file, "r") as f:
         idx_list = json.load(f)
-        return idx_list['filenames'][0], idx_list[idx_list['filenames'][0]]
+        return idx_list["filenames"][0], idx_list[idx_list["filenames"][0]]
 
 
 if __name__ == "__main__":
     args = vars(build_parser().parse_args())
 
     # load files
-    ref_file, ref_idx = read_index_list_from_file(args['subset_indices_ref'])
-    _, subset_idx = read_index_list_from_file(args['subset_indices'])
+    ref_file, ref_idx = read_index_list_from_file(args["subset_indices_ref"])
+    _, subset_idx = read_index_list_from_file(args["subset_indices"])
 
     # extract the indices in the reference streamline set
     subset_ref_idx = [
@@ -69,6 +71,4 @@ if __name__ == "__main__":
     ]
 
     # write reference indices
-    write_list_of_streamline_indices(
-        args['output_indices'], subset_ref_idx, ref_file
-    )
+    write_list_of_streamline_indices(args["output_indices"], subset_ref_idx, ref_file)

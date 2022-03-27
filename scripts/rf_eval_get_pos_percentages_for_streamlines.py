@@ -33,14 +33,14 @@ def build_argparser():
         "--json_path",
         required=False,
         help="Path to json file containing indices that are relevant for the "
-             "statistics. If not specified, evaluate for all streamlines.",
+        "statistics. If not specified, evaluate for all streamlines.",
     )
     return p
 
 
 def main():
     args = vars(build_argparser().parse_args())
-    
+
     filepath = os.getcwd()
 
     # get all relevant folders from the path (name must begin with OUTPUT_FOLDER_NAME)
@@ -52,17 +52,19 @@ def main():
     # get relevant streamlines
     entries = meta_streamline_index
     name = ""
-    if args.get('json_path'):
-        jsonpath = args['json_path']
+    if args.get("json_path"):
+        jsonpath = args["json_path"]
         print("Analyzing only indices from", jsonpath)
         ind = get_indices_from_json(jsonpath, dtype=np.int32)
         entries = meta_streamline_index[ind]
         name = jsonpath.split(".")[0]
 
     # get acceptance rates for all streamlines of interests and write to file.
-    result = np.array([[entry[2], get_pos_percentage(entry)] for entry in entries])
+    result = np.array(
+        [[entry[2], get_pos_percentage(entry)] for entry in entries]  # noqa: F821
+    )  # TODO
     np.savetxt(f"percentages_{name}.txt", result)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

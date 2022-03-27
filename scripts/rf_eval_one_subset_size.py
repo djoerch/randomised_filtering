@@ -29,14 +29,14 @@ def build_argparser():
         "--json_path",
         required=False,
         help="Path to json file containing indices that are relevant for "
-             "the statistics. (default: evaluate for all streamlines)",
+        "the statistics. (default: evaluate for all streamlines)",
     )
     return p
 
 
 def main():
     args = vars(build_argparser().parse_args())
-    
+
     filepath = os.getcwd()
 
     name = None
@@ -62,5 +62,5 @@ def main():
     evaluate_subsets(streamline_index, subsets, name)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

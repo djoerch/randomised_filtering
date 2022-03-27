@@ -33,14 +33,14 @@ def build_argparser():
         "--json_path",
         required=False,
         help="Path to json file containing indices that are relevant for the "
-             "statistics. If not specified, evaluate for all streamlines."
+        "statistics. If not specified, evaluate for all streamlines.",
     )
     return p
 
 
 def main():
     args = vars(build_argparser().parse_args())
-    
+
     filepath = os.getcwd()
 
     # get all relevant folders from the path (name must begin with OUTPUT_FOLDER_NAME)
@@ -49,8 +49,8 @@ def main():
     # get vote distributions for each streamline across all subset sizes in one variable
     meta_streamline_index = get_meta_streamline_index(folders)
 
-    if args.get('json_path'):
-        json_path = args['json_path']        
+    if args.get("json_path"):
+        json_path = args["json_path"]
         print("Analyzing only indices from", json_path)
         ind = get_indices_from_json(json_path, dtype=np.int32)
 
@@ -61,5 +61,5 @@ def main():
     evaluate_subsets(meta_streamline_index, MAX_SUBSETS, "all")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

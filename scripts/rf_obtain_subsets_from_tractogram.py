@@ -17,7 +17,9 @@ EPILOG = dedent(
     example calls:
 
       {filename} <path_to_tractogram> <path_to_json_file> <path_to_output_file>
-    """.format(filename=os.path.basename(__file__))
+    """.format(
+        filename=os.path.basename(__file__)
+    )
 )
 
 
@@ -63,7 +65,7 @@ if __name__ == "__main__":
         t_new = nib.streamlines.Tractogram(
             streamlines=t.streamlines[json_content[filenames[0]]],
             # NOTE: expected to be eye(4) at this point.
-            affine_to_rasmm=t.affine_to_rasmm
+            affine_to_rasmm=t.affine_to_rasmm,
         )
 
         # write back subset
@@ -71,7 +73,7 @@ if __name__ == "__main__":
             # tractogram with corrected affine in rasmm
             #   (or 'world'mm; same as image data)
             tractogram=t_new,
-            filename=jsonname[:-5]+".trk",
+            filename=jsonname[:-5] + ".trk",
             # header from given image data; defines the 'voxmm' space of the streamlines
-            header=trk.header
+            header=trk.header,
         )

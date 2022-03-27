@@ -25,7 +25,7 @@ def get_indices_from_json(filepath: str, dtype=None):
     -------
     array of the streamline indices
     """
-    
+
     with open(filepath, "r") as f:
         data = json.loads(f.readline())
         ind_key = data["filenames"][0]
@@ -44,7 +44,7 @@ def get_streamlines_from_trk(filepath: str):
 
 def get_min_max(streamlines):
     """Determines and returns min/max of coordinates in every dimension."""
-    
+
     print("getting min coordinates")
     testmin = np.array([np.min(tmp, axis=0) for tmp in streamlines])
     print("getting max coordinates")
@@ -110,7 +110,7 @@ def load_data(
     o_streamlines
         Set of other/inconclusive streamlines
     """
-    
+
     print("Loading data from", trk_path)
 
     # load streamlines

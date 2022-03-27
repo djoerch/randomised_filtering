@@ -21,7 +21,9 @@ EPILOG = dedent(
     example calls:
 
       {filename} out_tractogram2_selection.txt out_tractogram2
-    """.format(filename=os.path.basename(__file__))
+    """.format(
+        filename=os.path.basename(__file__)
+    )
 )
 
 
@@ -32,7 +34,7 @@ def build_parser():
     p.add_argument(
         "selection_file",
         help="Path to mrtrix selection file containing 'binary mask' of selected "
-             "streamlines (output of tcksift with option -out_selection)."
+        "streamlines (output of tcksift with option -out_selection).",
     )
     p.add_argument(
         "path_to_tractogram",
@@ -41,8 +43,8 @@ def build_parser():
     p.add_argument(
         "output_basename",
         help="Path to output file without file ending."
-             " (The script will append 'plausible' or 'implausible' and the .json "
-             "file ending.)"
+        " (The script will append 'plausible' or 'implausible' and the .json "
+        "file ending.)",
     )
     return p
 
@@ -61,14 +63,15 @@ if __name__ == "__main__":
     )
 
     for suffix, idx_list in tqdm(
-        list(zip(
-            [SUFFIX_PLAUSIBLE, SUFFIX_IMPLAUSIBLE],
-            [idx_plausible, idx_implausible]
-        )),
-        desc="Writing index files"
+        list(
+            zip(
+                [SUFFIX_PLAUSIBLE, SUFFIX_IMPLAUSIBLE], [idx_plausible, idx_implausible]
+            )
+        ),
+        desc="Writing index files",
     ):
         write_list_of_streamline_indices(
             args["output_basename"] + suffix + SUFFIX_FILE,
             idx_list,
-            args["path_to_tractogram"]
+            args["path_to_tractogram"],
         )

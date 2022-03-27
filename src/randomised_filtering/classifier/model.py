@@ -10,9 +10,9 @@ def get_categorical_model(num_classes, input_shape):
     model = keras.Sequential(
         [
             keras.layers.InputLayer(input_shape=input_shape),
-            keras.layers.Conv1D(8, kernel_size=5, padding='same', activation="relu"),
+            keras.layers.Conv1D(8, kernel_size=5, padding="same", activation="relu"),
             keras.layers.MaxPooling1D(pool_size=2),
-            keras.layers.Conv1D(16, kernel_size=3, padding='same', activation="relu"),
+            keras.layers.Conv1D(16, kernel_size=3, padding="same", activation="relu"),
             keras.layers.MaxPooling1D(pool_size=2),
             keras.layers.Flatten(),
             keras.layers.Dropout(0.5),
@@ -20,8 +20,9 @@ def get_categorical_model(num_classes, input_shape):
         ]
     )
 
-    model.compile(loss="categorical_crossentropy", optimizer="adam",
-                  metrics=["accuracy"])
+    model.compile(
+        loss="categorical_crossentropy", optimizer="adam", metrics=["accuracy"]
+    )
     return model
 
 
@@ -33,9 +34,9 @@ def get_binary_model(input_shape):
     model = keras.Sequential(
         [
             keras.layers.InputLayer(input_shape=input_shape),
-            keras.layers.Conv1D(8, kernel_size=5, padding='same', activation="relu"),
+            keras.layers.Conv1D(8, kernel_size=5, padding="same", activation="relu"),
             keras.layers.MaxPooling1D(pool_size=2),
-            keras.layers.Conv1D(16, kernel_size=3, padding='same', activation="relu"),
+            keras.layers.Conv1D(16, kernel_size=3, padding="same", activation="relu"),
             keras.layers.MaxPooling1D(pool_size=2),
             keras.layers.Flatten(),
             keras.layers.Dropout(0.5),
@@ -43,5 +44,5 @@ def get_binary_model(input_shape):
         ]
     )
 
-    model.compile(loss="binary_crossentropy", optimizer="adam", metrics=['accuracy'])
+    model.compile(loss="binary_crossentropy", optimizer="adam", metrics=["accuracy"])
     return model
