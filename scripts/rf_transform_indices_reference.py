@@ -6,7 +6,7 @@ import json
 from argparse import ArgumentParser, RawTextHelpFormatter
 from textwrap import dedent
 from tqdm import tqdm
-from typing import List
+from typing import Tuple, Any
 
 from randomised_filtering.streamline_indices import write_list_of_streamline_indices
 
@@ -37,7 +37,7 @@ def build_parser():
     return p
 
 
-def read_index_list_from_file(json_file: str) -> List[int]:
+def read_index_list_from_file(json_file: str) -> Tuple[Any, Any]:
     """
     Read index list and reference tractogram filename from index file.
 
@@ -50,7 +50,7 @@ def read_index_list_from_file(json_file: str) -> List[int]:
     -------
     path_to_ref_tractogram : str
         path to reference tractogram
-    idx_list : List[int]
+    idx_list : Tuple[int, int]
         list of streamline indices in the reference tractogram
     """
     with open(json_file, "r") as f:
