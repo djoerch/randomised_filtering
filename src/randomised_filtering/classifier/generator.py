@@ -5,7 +5,6 @@ import tensorflow as tf
 
 
 class BalancedDataGen(keras.utils.Sequence):
-
     def __init__(self, data, weights, batch_size, categorical=False):
 
         # copy to avoid messing up original data order through np.shuffle
@@ -39,8 +38,10 @@ class BalancedDataGen(keras.utils.Sequence):
         data_idx = np.array(idx % self._batches[class_idx])
         class_data = self._data[class_idx]
 
-        x = class_data[data_idx * self._subbatch_size:
-                       data_idx * self._subbatch_size + self._subbatch_size]
+        x = class_data[
+            data_idx * self._subbatch_size : data_idx * self._subbatch_size
+            + self._subbatch_size
+        ]
         y = np.full(self._subbatch_size, class_idx)
         w = np.full(self._subbatch_size, self._weights[class_idx])
 
@@ -69,8 +70,9 @@ class BalancedDataGen(keras.utils.Sequence):
         w = np.concatenate(w, axis=0)
 
         if self._categorical:
-            y = tf.keras.utils.to_categorical(y, num_classes=self._num_classes,
-                                              dtype='float32')
+            y = tf.keras.utils.to_categorical(
+                y, num_classes=self._num_classes, dtype="float32"
+            )
 
         return x, y, w
 

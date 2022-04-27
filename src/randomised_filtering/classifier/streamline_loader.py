@@ -11,23 +11,29 @@ import numpy as np
 from typing import Optional
 
 
-def get_indices_from_json(filepath: str):
+def get_indices_from_json(filepath: str, dtype=None):
     """Loads streamline indices from a json file
 
     Parameters
     ----------
     filepath : str
-     path/name of file with the indices
+        path/name of file with the indices
+    dtype : numpy dtype, optional
+        if given, indices are converted to given data type
 
     Returns
     -------
     array of the streamline indices
     """
-    
+
     with open(filepath, "r") as f:
         data = json.loads(f.readline())
         ind_key = data["filenames"][0]
         ind = data[ind_key]
+
+    if dtype:
+        ind = np.array(ind, dtype=dtype)
+
     return ind
 
 
@@ -38,7 +44,7 @@ def get_streamlines_from_trk(filepath: str):
 
 def get_min_max(streamlines):
     """Determines and returns min/max of coordinates in every dimension."""
-    
+
     print("getting min coordinates")
     testmin = np.array([np.min(tmp, axis=0) for tmp in streamlines])
     print("getting max coordinates")
@@ -75,7 +81,7 @@ def normalize_streamlines(
     print("min", mincoord)
     print("max", maxcoord)
     return np.asarray(
-        [((s - mincoord) / (maxcoord - mincoord)) * 2 - 1 for s in streamlines]
+        [((s - mincoord) / (maxcoord - mincoord)) * 2 - 1 for s in streamlines]  # type: ignore[operator]  # noqa: E501
     )
 
 
@@ -104,7 +110,7 @@ def load_data(
     o_streamlines
         Set of other/inconclusive streamlines
     """
-    
+
     print("Loading data from", trk_path)
 
     # load streamlines

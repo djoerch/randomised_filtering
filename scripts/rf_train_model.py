@@ -7,22 +7,28 @@ import cv2
 from textwrap import dedent
 from argparse import ArgumentParser, RawTextHelpFormatter
 
-from randomised_filtering.classifier.model import get_binary_model, \
-    get_categorical_model
+from randomised_filtering.classifier.model import (
+    get_binary_model,
+    get_categorical_model,
+)
 from randomised_filtering.classifier.streamline_loader import load_data
 from randomised_filtering.classifier.training import training_cv
 
-DESC = dedent("""
+DESC = dedent(
+    """
     Train a classifier with given tractogram as well as positive and negative votes.
-""")
+"""
+)
 
-EPILOG = dedent(f"""
+EPILOG = dedent(
+    f"""
     Example call:
       {os.path.basename(__file__)} --tractogram data/599671/All_10M_corrected.trk \
         --positive data/599671/json/pos_streamlines.json \
         --negative data/599671/json/neg_streamlines.json \
         --p-vs-n --three-class
-""")
+"""
+)
 
 
 DEFAULT_POINTS_PER_STREAMLINE = 23
@@ -99,7 +105,10 @@ def main():
     print_args(args)
 
     pos_streamlines, neg_streamlines, inc_streamlines = load_data(
-        args["tractogram"], args["positive"], args["negative"], normalize=True,
+        args["tractogram"],
+        args["positive"],
+        args["negative"],
+        normalize=True,
     )
 
     np.random.shuffle(pos_streamlines)
@@ -110,15 +119,15 @@ def main():
     resampling_shape = (3, args["points_per_streamline"])
     input_shape = (np.prod(resampling_shape), 1)  # shape of network input
 
-    pos_resized = np.array([
-        cv2.resize(x, resampling_shape).reshape(input_shape) for x in pos_streamlines
-    ])
-    neg_resized = np.array([
-        cv2.resize(x, resampling_shape).reshape(input_shape) for x in neg_streamlines
-    ])
-    inc_resized = np.array([
-        cv2.resize(x, resampling_shape).reshape(input_shape) for x in inc_streamlines
-    ])
+    pos_resized = np.array(
+        [cv2.resize(x, resampling_shape).reshape(input_shape) for x in pos_streamlines]
+    )
+    neg_resized = np.array(
+        [cv2.resize(x, resampling_shape).reshape(input_shape) for x in neg_streamlines]
+    )
+    inc_resized = np.array(
+        [cv2.resize(x, resampling_shape).reshape(input_shape) for x in inc_streamlines]
+    )
 
     common_args = dict(
         input_shape=input_shape,
