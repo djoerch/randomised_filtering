@@ -4,8 +4,8 @@ This repository provides the code for the experiments on the method called
 _randomized SIFT_ (rSIFT) as described in
 
 A. Hain, D. Jörgens, R. Moreno,
-"_Assessing Individual Streamline Plausibility
-Through Randomized Spherical-Deconvolution Informed Tractogram Filtering_",
+"_Assessing Streamline Plausibility
+Through Randomized Iterative Spherical-Deconvolution Informed Tractogram Filtering_",
 manuscript submitted, 2022.
 
 ## Installation Instructions
@@ -17,6 +17,7 @@ Make sure that the following dependencies are installed:
  - `mrtrix3` (follow instructions at
     https://mrtrix.readthedocs.io/en/latest/index.html)
  - `scilpy` (follow instructions at https://github.com/scilus/scilpy)
+ - CUDA (Make sure to match the CUDA version with the tensorflow version specified in the requirements.)
 
 #### Installation
 
@@ -33,6 +34,11 @@ pip install -e <path_to_randomised_filtering_repo>
 
 After that, the **python** scripts in the `scripts` folder will be available through
 autocompletion in the command line whenever the virtual environment is activated.
+
+## Model weights
+
+The weights of the best performing CV model for each classifier type are provided in the folder `data/models`.
+These weights were obtained with the tensorflow version specified in `requirements.txt`.
 
 ## Data
 
