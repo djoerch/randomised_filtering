@@ -6,7 +6,7 @@ _randomized SIFT_ (rSIFT) as described in
 A. Hain, D. Jörgens, R. Moreno,
 "_Assessing Streamline Plausibility
 Through Randomized Iterative Spherical-Deconvolution Informed Tractogram Filtering_",
-manuscript submitted, 2022.
+[arXiv](https://arxiv.org/abs/2205.04843), 2022.
 
 ## Installation Instructions
 
