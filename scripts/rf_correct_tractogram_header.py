@@ -5,6 +5,7 @@ import logging
 import numpy as np
 from copy import deepcopy
 
+import nibabel as nib
 from dipy.io.streamline import load_tractogram, StatefulTractogram, Space, save_tractogram
 
 from argparse import ArgumentParser, RawTextHelpFormatter
@@ -37,6 +38,7 @@ def build_parser():
     )
     p.add_argument("tractogram_in", help="Path to tractogram to be adjusted.")
     p.add_argument("tractogram_out", help="Path to tractogram with adjusted header.")
+    p.add_argument("--reference", help="Reference to copy affine from.")
     return p
 
 
@@ -53,32 +55,44 @@ if __name__ == "__main__":
     sft.to_vox()
     sft.to_corner()
 
-    # 2. find settings of the affine that would bring the streamlines
-    #  to a valid state.
-    bbox = sft.compute_bounding_box()
-    shift_x = np.min(bbox[:, 0])
-    shift_y = np.min(bbox[:, 1])
-    shift_z = np.min(bbox[:, 2])
-    if shift_x > 0:
-        shift_x = 0
-    if shift_y > 0:
-        shift_y = 0
-    if shift_z > 0:
-        shift_z = 0
-    logger.info(f"shift_x: {shift_x}, shift_y: {shift_y}, shift_z: {shift_z}")
-
-    aff_vox2rasmm = deepcopy(sft.affine)
-    aff_vox2rasmm[0:3, -1] = [shift_x, shift_y, shift_z]
-
     bbox = sft.compute_bounding_box()
     dimensions = [
         int(np.max(bbox[:, i]) - np.min(bbox[:, i]) + 2)
          for i in range(3)
     ]
 
-    reference = (
-        aff_vox2rasmm, dimensions, sft.voxel_sizes, sft.voxel_order
-    )
+    # 2. copy affine and header data from reference if given.
+    if args["reference"]:
+
+        nifti = nib.load(args["reference"])
+        aff_vox2rasmm = nifti.affine
+        reference = nifti
+
+        sft.to_center()
+
+    else:
+
+        # 2. find settings of the affine that would bring the streamlines
+        #  to a valid state.
+        bbox = sft.compute_bounding_box()
+        shift_x = np.min(bbox[:, 0])
+        shift_y = np.min(bbox[:, 1])
+        shift_z = np.min(bbox[:, 2])
+        if shift_x > 0:
+            shift_x = 0
+        if shift_y > 0:
+            shift_y = 0
+        if shift_z > 0:
+            shift_z = 0
+        logger.info(f"shift_x: {shift_x}, shift_y: {shift_y}, shift_z: {shift_z}")
+
+        aff_vox2rasmm = deepcopy(sft.affine)
+        aff_vox2rasmm[0:3, -1] = [shift_x, shift_y, shift_z]
+
+
+        reference = (
+            aff_vox2rasmm, dimensions, sft.voxel_sizes, sft.voxel_order
+        )
 
     sft.to_rasmm()
     sft = StatefulTractogram(sft.streamlines, reference, space=Space.RASMM)
