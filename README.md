@@ -4,9 +4,8 @@ This repository provides the code for the experiments on the method called
 _randomized SIFT_ (rSIFT) as described in
 
 A. Hain, D. Jörgens, R. Moreno,
-"_Assessing Streamline Plausibility
-Through Randomized Iterative Spherical-Deconvolution Informed Tractogram Filtering_",
-[arXiv](https://arxiv.org/abs/2205.04843), 2022.
+"_Randomized Iterative Spherical-Deconvolution Informed Tractogram Filtering_",
+[NeuroImage](https://doi.org/10.1016/j.neuroimage.2023.120248), 2023.
 
 ## Installation Instructions
 
